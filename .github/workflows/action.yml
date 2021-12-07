@@ -1,0 +1,26 @@
+name: Auto Release
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The Job was automatically triggered by a ${{ github.event_name }} Event."
+      - run: echo "🐧 This Job is now running on a ${{ runner.os }} Server hosted by GitHub!"
+      - run: echo "🔎 The Name of Your branch is ${{ github.ref }} and your Repository is ${{ github.repository }}."
+      - name: Checkout
+        uses: actions/checkout@v2
+      - run: echo "💡 The ${{ github.repository }} Repository has been cloned to the Runner."
+      - run: echo "🖥️ The Workflow is now ready to test your Code on the Runner."
+      - name: List Files in the Repository
+        run: |
+          ls ${{ github.workspace }}
+      - uses: actions/checkout@v2
+      - uses: papeloto/action-zip@v1
+        with:
+          files: /
+          dest: MARS_SOM_BASE.zip
+      - uses: actions/upload-artifact@v2
+        with:
+          name: MARS_SOM_BASE
+          path: ${{ github.workspace }}/MARS_SOM_OVERLAY.zip
+      - run: echo "🍏 This Job's status is ${{ job.status }}."
