@@ -2,8 +2,8 @@
 
 MINAPI=30
 MAXAPI=31
-#DYNLIB=false
-#DEBUG=false
+DYNLIB=true
+DEBUG=false
 
 SKIPUNZIP=1
 unzip -qjo "$ZIPFILE" 'common/functions.sh' -d $TMPDIR >&2
