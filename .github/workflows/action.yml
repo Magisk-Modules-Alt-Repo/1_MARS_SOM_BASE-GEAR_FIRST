@@ -3,7 +3,7 @@ name: Auto-Build Magisk Module
 on:
   push:
     branches:
-    - main
+    - 12
 
 jobs:
   build:
