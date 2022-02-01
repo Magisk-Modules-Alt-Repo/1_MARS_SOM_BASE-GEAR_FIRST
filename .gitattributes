@@ -4,6 +4,7 @@
 *.md text eol=lf
 *.xml text eol=lf
 META-INF/** text eol=lf
+common/** text eol=lf
 
 # DENOTE ALL FILES THAT ARE TRULY BINARY AND SHOULD NOT BE MODIFIED
 common/addon/**/tools/** binary
