@@ -3,7 +3,7 @@ name: Auto-Build Magisk Module
 on:
   push:
     branches:
-    - 12
+    - main
 
 jobs:
   build:
@@ -23,7 +23,7 @@ jobs:
         run: echo "::set-output name=version::$(grep "^version=" module.prop|cut -d'=' -f2)"
 
       - name: Build project # This would actually build your project, using zip for an example artifact
-        run: zip -r "${{ steps.mId.outputs.id }}.v${{ steps.mVersion.outputs.version }}.zip" . -x "README.md" ".git/*" ".github/*" 
+        run: zip -r "${{ steps.mId.outputs.id }}.V${{ steps.mVersion.outputs.version }}.zip" . -x "README.md" ".git/*" ".github/*" 
 
       - name: Create Release
         id: create_release
