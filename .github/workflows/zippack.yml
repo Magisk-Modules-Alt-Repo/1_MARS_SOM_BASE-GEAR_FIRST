@@ -1,0 +1,48 @@
+name: MARS ZIPPACK
+
+on:
+  push:
+    branches:
+    - 14
+
+jobs:
+  build:
+    name: UPLOAD ASSET
+    runs-on: ubuntu-latest
+    steps:
+          
+      - name: CHECKOUT REPO
+        uses: actions/checkout@v3
+
+      - name: SET TIME
+        id: SET_TIME
+        run: echo "::set-output name=ZIP_TIME::$(date +%H%M%S)"
+        
+      - name: SET VERSION
+        id: SET_VERSION
+        run: echo "::set-output name=versionCode::$(grep "^versionCode=" module.prop|cut -d'=' -f2)"
+
+      - name: BUILD ZIP
+        run: zip -r "MARS_V${{ steps.SET_VERSION.outputs.versionCode }}_${{ steps.SET_TIME.outputs.ZIP_TIME }}.zip" . -x ".gitattributes" ".gitignore" ".git/*" ".github/*"
+
+      - name: CREATE RELEASE
+        id: CREATE_RELEASE
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          draft: false
+          prerelease: true
+          tag_name: MARS_V${{ steps.SET_VERSION.outputs.versionCode }}_${{ steps.SET_TIME.outputs.ZIP_TIME }}
+          release_name: MARS_V${{ steps.SET_VERSION.outputs.versionCode }}_${{ steps.SET_TIME.outputs.ZIP_TIME }}
+
+      - name: UPLOAD RELEASE
+        id: UPLOAD_RELEASE
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.CREATE_RELEASE.outputs.upload_url }} 
+          asset_path: ./MARS_V${{ steps.SET_VERSION.outputs.versionCode }}_${{ steps.SET_TIME.outputs.ZIP_TIME }}.zip
+          asset_name: MARS_V${{ steps.SET_VERSION.outputs.versionCode }}_${{ steps.SET_TIME.outputs.ZIP_TIME }}.zip
+          asset_content_type: application/zip
